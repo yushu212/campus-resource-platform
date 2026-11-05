@@ -5,7 +5,9 @@ FDU工程伦理小组-29作业
 
 [课程项目变更与验收报告](docs/课程项目变更与验收报告.md) 汇总本次修复、双数据库验证、复跑方法和小组待办。
 
-需求索引见 [需求基线](docs/requirements.md)，课程任务书拆解见 [详细需求文档](docs/requirements-detailed.md)，按当前产品实现展开的 [产品需求规格说明书](docs/校园资源平台需求规格说明书.md)，当前架构提案见 [系统结构](docs/architecture.md)，共享数据的实体、权限、冲突规则和变更流程见 [共享信息约束与管理](docs/shared-data-governance.md)。
+需求索引见 [需求基线](docs/requirements.md)，课程任务书拆解见 [详细需求文档](docs/requirements-detailed.md)，按当前产品实现展开的 [产品需求规格说明书](docs/校园资源平台需求规格说明书.md)，当前架构提案见 [系统结构](docs/architecture.md)，共享数据的实体、权限、冲突规则和变更流程见 [共享信息约束与管理](docs/shared-data-governance.md)，代码中的实际实现方式见 [共享信息约束实现说明](docs/共享信息约束实现说明.md)。
+
+主要文件夹和代码入口见 [仓库目录说明](docs/仓库目录说明.md)。
 
 ## 现在能演示什么
 
