@@ -463,3 +463,34 @@ def test_timeout_worker_releases_reservation_and_records_violation(system, monke
         assert (
             db.scalar(select(Notification.id).where(Notification.related_id == row.id)) is not None
         )
+
+
+def test_m1_back_to_back_bookings_and_power_filter(system) -> None:
+    """Verify M1-01 power filtering and M1-02 half-open interval [start, end) back-to-back bookings."""
+    client, _sessions = system
+    login(client, "student")
+    tomorrow = (now_local() + timedelta(days=1)).replace(hour=10, minute=0, second=0, microsecond=0)
+    date_str = tomorrow.date().isoformat()
+
+    powered_resp = client.get(
+        f"/api/v1/seats?date={date_str}&start_time=10:00&duration_hours=2&has_power=true"
+    )
+    assert powered_resp.status_code == 200
+    powered_seats = powered_resp.json()["seats"]
+    assert powered_seats
+    assert all(seat["has_power"] is True for seat in powered_seats)
+
+    first_slot = client.post(
+        "/api/v1/reservations",
+        json={"seat_id": "A01", "start_at": tomorrow.isoformat(), "duration_hours": 2},
+    )
+    assert first_slot.status_code == 201
+
+    adjacent_start = tomorrow.replace(hour=12)
+    second_slot = client.post(
+        "/api/v1/reservations",
+        json={"seat_id": "A01", "start_at": adjacent_start.isoformat(), "duration_hours": 2},
+    )
+    assert second_slot.status_code == 201
+    assert second_slot.json()["start_at"].endswith("12:00")
+    assert second_slot.json()["end_at"].endswith("14:00")
